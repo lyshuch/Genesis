@@ -135,6 +135,8 @@ public class OrderScreenController implements Initializable {
         double tax = subTotal * .07; // the .07 is the taxrate of 7% for
         // the 1.07 is for finding what the sub total and the tax added together would be
         double total = subTotal * 1.07;
+        // comment to test githup upload
+
 
 
         //declare an observable list for table view
