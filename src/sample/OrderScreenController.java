@@ -23,7 +23,7 @@ public class OrderScreenController implements Initializable {
     @FXML private Button enterItemButton;
     @FXML private Button tenderButton;
     @FXML private Button removeItemButton;
-○
+
     //treeview
     @FXML public TreeView <String> treeView;
 
