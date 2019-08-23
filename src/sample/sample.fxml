@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1361.0" style="-fx-background-color: #FF0000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.OrderScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1361.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.OrderScreenController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -137,12 +137,12 @@
       </VBox>
    </bottom>
    <left>
-      <TreeView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #32FF00;" BorderPane.alignment="CENTER" />
+      <TreeView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #0027FF;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView id="orderTable" fx:id="orderTable" editable="true" prefHeight="773.0" prefWidth="1161.0" style="-fx-background-color: #FF00D8;" VBox.vgrow="ALWAYS">
+            <TableView id="orderTable" fx:id="orderTable" editable="true" prefHeight="773.0" prefWidth="1161.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="itemNumberColumn" editable="false" sortable="false" text="Item Number" />
                 <TableColumn fx:id="qtyColumn" editable="false" sortable="false" text="QTY" />

@@ -1,8 +1,6 @@
 package sample;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
-import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,7 +11,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class OrderScreenController implements Initializable {
 
@@ -60,6 +57,10 @@ public class OrderScreenController implements Initializable {
 
     //variables
     private double subTotal;
+    private double tax;
+    private double total;
+    private double taxrate = .07;
+    DecimalFormat df = new DecimalFormat("#.00");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -117,6 +118,20 @@ public class OrderScreenController implements Initializable {
     }
 
     public void onRemoveItemClick(){
+        ObservableList<Items> itemsSelected, allItems;
+        allItems = orderTable.getItems();
+        itemsSelected = orderTable.getSelectionModel().getSelectedItems();
+        for (int i = 0; i < itemsSelected.size(); i++){
+            Items item = itemsSelected.get(i); //getting the current item
+            subTotal = subTotal - item.getLineTotal(); // net three lines are calculating the subtotal, tax, and total again
+            tax = subTotal * taxrate;
+            total = subTotal * (1 + taxrate);
+            //next three lines are setting the appropriate labels to the calculated values above
+            subtotalLabel.setText("Total: " + df.format(subTotal));
+            taxLabel.setText("Tax: " + df.format(tax));
+            totalLabel.setText("Total: " + df.format(total));
+        }
+        itemsSelected.forEach(allItems::remove);
     }
 
     @FXML public void tenderButtonClick() throws ClassNotFoundException {
@@ -132,9 +147,9 @@ public class OrderScreenController implements Initializable {
     @FXML private void populateItem(Items item) {
         subTotal = subTotal + item.getLineTotal();
         // the .07 is the taxrate of 7% for
-        double tax = subTotal * .07; // the .07 is the taxrate of 7% for
+        tax = subTotal * .07; // the .07 is the taxrate of 7% for
         // the 1.07 is for finding what the sub total and the tax added together would be
-        double total = subTotal * 1.07;
+        total = subTotal * 1.07;
         // comment to test githup upload
 
 
@@ -147,14 +162,14 @@ public class OrderScreenController implements Initializable {
         //set items to the items table
         orderTable.setItems(itemData);
 
-         DecimalFormat df = new DecimalFormat("#.00");
         subtotalLabel.setText("Total: " + df.format(subTotal));
         taxLabel.setText("Tax: " + df.format(tax));
         totalLabel.setText("Total: " + df.format(total));
 
+        itemNumberTextField.clear();
     }
 
-    //TODO asdfadsf
+    //TODO
     // -- do remove item button
     // -- do tender button
     //FIXME

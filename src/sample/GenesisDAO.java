@@ -2,6 +2,8 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.*;
 
 public class GenesisDAO {
@@ -26,7 +28,7 @@ public class GenesisDAO {
     }
 
 
-    private static Items getItemsFromResultSet(ResultSet rs, int qty, String load) throws SQLException{
+    private static Items getItemsFromResultSet(@NotNull ResultSet rs, int qty, String load) throws SQLException{ // this method is to get the values from the database and pass them to a item object
         Items item = null;
         if(rs.next()){
             item = new Items();
