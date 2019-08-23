@@ -44,7 +44,7 @@ public class OrderScreenController implements Initializable {
     @FXML private Label totalLabel;
 
     //table view
-    @FXML private TableView orderTable;
+    @FXML private TableView<Items> orderTable;
     @FXML private TableColumn<Items, Integer> itemNumberColumn;
     @FXML private TableColumn<Items, Integer> qtyColumn;
     @FXML private TableColumn<Items, String> pricePerItemColumn;
@@ -59,8 +59,7 @@ public class OrderScreenController implements Initializable {
     private double subTotal;
     private double tax;
     private double total;
-    private double taxrate = .07;
-    DecimalFormat df = new DecimalFormat("#.00");
+    private DecimalFormat df = new DecimalFormat("#.00");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,11 +69,11 @@ public class OrderScreenController implements Initializable {
         //Tree View
 
         //root tree
-        TreeItem<String> root = new TreeItem<String>("Genesis");
+        TreeItem<String> root = new TreeItem<>("Genesis");
 
         //main tree items
-        TreeItem<String> inventoryTree = new TreeItem<String>("Inventory");
-        TreeItem<String> sellingScreen = new TreeItem<String>("Selling Screen");
+        TreeItem<String> inventoryTree = new TreeItem<>("Inventory");
+        TreeItem<String> sellingScreen = new TreeItem<>("Selling Screen");
 
         //add items to tree
         root.getChildren().add(inventoryTree);
@@ -118,14 +117,15 @@ public class OrderScreenController implements Initializable {
     }
 
     public void onRemoveItemClick(){
-        ObservableList<Items> itemsSelected, allItems;
+        ObservableList<Items> itemsSelected = orderTable.getSelectionModel().getSelectedItems();
+        ObservableList<Items> allItems;
         allItems = orderTable.getItems();
-        itemsSelected = orderTable.getSelectionModel().getSelectedItems();
-        for (int i = 0; i < itemsSelected.size(); i++){
-            Items item = itemsSelected.get(i); //getting the current item
+        //getting the current item
+        for (Items item : itemsSelected) {
             subTotal = subTotal - item.getLineTotal(); // net three lines are calculating the subtotal, tax, and total again
-            tax = subTotal * taxrate;
-            total = subTotal * (1 + taxrate);
+            double taxRate = .07;
+            tax = subTotal * taxRate;
+            total = subTotal * (1 + taxRate);
             //next three lines are setting the appropriate labels to the calculated values above
             subtotalLabel.setText("Total: " + df.format(subTotal));
             taxLabel.setText("Tax: " + df.format(tax));
@@ -134,8 +134,11 @@ public class OrderScreenController implements Initializable {
         itemsSelected.forEach(allItems::remove);
     }
 
-    @FXML public void tenderButtonClick() throws ClassNotFoundException {
+    @FXML public void tenderButtonClick() {
+        ObservableList <Items> tableitems = orderTable.getItems();
+        for (Items item: tableitems) {
 
+        }
     }
 
     @FXML private void populateAndShowItem(Items item) {
@@ -170,7 +173,6 @@ public class OrderScreenController implements Initializable {
     }
 
     //TODO
-    // -- do remove item button
     // -- do tender button
     //FIXME
 

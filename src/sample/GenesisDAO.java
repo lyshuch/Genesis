@@ -7,9 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.*;
 
 public class GenesisDAO {
-    public static Items searchItem (int itemNumber, int qty, String load) throws SQLException, ClassNotFoundException{
-        //declare a select statement
-        String selectStmt = "SELECT * FROM items WHERE ItemNumber=" + itemNumber;
+    static Items searchItem(int itemNumber, int qty, String load) throws SQLException, ClassNotFoundException{
 
         //execute SELECT statement
         try{
@@ -17,10 +15,9 @@ public class GenesisDAO {
             ResultSet rsitem = DBUtil.dbExecutePreparedStmt(itemNumber);
 
             //send resultset to the getitemList method and get item object
-            Items item = getItemsFromResultSet(rsitem, qty, load);
 
             //return item object
-            return item;
+            return getItemsFromResultSet(rsitem, qty, load);
         }catch (SQLException e){
             System.out.println("While searching an item with item number: " + itemNumber + " an error occurred: "+e);
             throw e;
@@ -54,10 +51,9 @@ public class GenesisDAO {
             //get resultSet from dbExecuteQuery method
             ResultSet rsItems = DBUtil.dbExecuteQuery(selectStmt);
             //send result set to getItemList method and get items object
-            ObservableList<Items> itemList = getItemList(rsItems);
 
             //return item object
-            return itemList;
+            return getItemList(rsItems);
 
         }catch (SQLException e){
             System.out.println("SQL select operation had failed: " + e);
@@ -65,7 +61,7 @@ public class GenesisDAO {
         }
     }
     //SELECT * from items operation
-    private static ObservableList<Items> getItemList(ResultSet rs) throws SQLException, ClassNotFoundException{
+    private static ObservableList<Items> getItemList(ResultSet rs) throws SQLException {
         //Declare a observable list wich comprises of item objects
         ObservableList<Items> itemList = FXCollections.observableArrayList();
 
