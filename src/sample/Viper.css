@@ -1,0 +1,11 @@
+.root{
+    -fx-background-color: #383838;
+    -fx-font-size: 11pt;
+}
+.table-view{
+    -fx-background-color: #383838;
+
+}
+.button{
+    -fx-font-size: 14pt;
+}

@@ -120,7 +120,7 @@
                   <Label layoutX="10.0" layoutY="10.0" text="Model number:" />
                   <TextField layoutX="89.0" layoutY="10.0" prefHeight="25.0" prefWidth="150.0" />
                   <Region prefHeight="25.0" prefWidth="69.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="enterItemButton" defaultButton="true" mnemonicParsing="false" onAction="#onEnterItemClick" prefHeight="25.0" prefWidth="110.0" text="Enter Item" />
+                  <Button fx:id="enterItemButton" defaultButton="true" mnemonicParsing="false" onAction="#onEnterItemClick" prefHeight="25.0" prefWidth="110.0" text="Enter Item" HBox.hgrow="ALWAYS" />
                   <Button fx:id="removeItemButton" layoutX="876.0" layoutY="10.0" mnemonicParsing="false" onAction="#onRemoveItemClick" prefHeight="25.0" prefWidth="110.0" text="Remove Item">
                      <HBox.margin>
                         <Insets left="10.0" />
