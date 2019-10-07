@@ -9,10 +9,7 @@ public class DBUtil {
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     //connection
-    private static Connection conn = null;
-
-    //connection string
-    //private static final String connStr = "jdbc:mysql://192.168.1.157:3306/genesis?autoReconnect=true&useSSL=false" + "kim" + "austin";
+    private static Connection conn = null
 
     public static void dbConnect() throws SQLException, ClassNotFoundException{
         try {
@@ -26,7 +23,7 @@ public class DBUtil {
 
         // establish the mysql connection using connection string
         try{
-            conn = DriverManager.getConnection("jdbc:mysql://192.168.1.157:3306/genesis?autoReconnect=true&useSSL=false", "kim", "austin");
+            conn = DriverManager.getConnection(//removed data for security purposes);
         }catch(SQLException e){
             System.out.println("Connection Failed! Check output console" + e);
             e.printStackTrace();
