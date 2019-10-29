@@ -190,4 +190,7 @@ public class Items {
     public void setItemName(String itemName) {
         this.itemName.set(itemName);
     }
+    public String toString(){
+        return itemNumber.toString() + " "+ qty.toString() +" "+ retailPrice.toString() +" "+ load.toString() +" "+ modelNumber.toString() +" "+ lineTotal.toString();
+    }
 }

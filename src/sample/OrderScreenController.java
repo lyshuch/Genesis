@@ -70,6 +70,7 @@ public class OrderScreenController implements Initializable {
 
         //root tree
         TreeItem<String> root = new TreeItem<>("Genesis");
+        root.setExpanded(true);
 
         //main tree items
         TreeItem<String> inventoryTree = new TreeItem<>("Inventory");
@@ -104,7 +105,7 @@ public class OrderScreenController implements Initializable {
 
             //checking to see if item is null (did not find item in database)
             if (item == null){
-                infoTextArea.appendText("Item was not found");
+                infoTextArea.appendText("Item number " + itemNumberTextField.getText() +" was not found\n");
             }
 
             //populate item on tableview and display
@@ -115,7 +116,6 @@ public class OrderScreenController implements Initializable {
             throw e;
         }
     }
-
     public void onRemoveItemClick(){
         ObservableList<Items> itemsSelected = orderTable.getSelectionModel().getSelectedItems();
         ObservableList<Items> allItems;
@@ -133,20 +133,25 @@ public class OrderScreenController implements Initializable {
         }
         itemsSelected.forEach(allItems::remove);
     }
-
     @FXML public void tenderButtonClick() {
-        ObservableList <Items> tableitems = orderTable.getItems();
-        for (Items item: tableitems) {
-
+        ObservableList<Items> tableItems = orderTable.getItems();
+        if (tableItems.isEmpty() == false) {
+            System.out.println("Table Items is not empty");
+            for (int i = 0; i < tableItems.size(); i++) {
+                System.out.println(tableItems.toString());
+                Items items = tableItems.get(i);
+                System.out.println(items.toString());
+            }
+        }
+        else{
+            System.out.println("Table Items is empty");
         }
     }
-
     @FXML private void populateAndShowItem(Items item) {
         if(item != null){
             populateItem(item);
         }
 }
-
     @FXML private void populateItem(Items item) {
         subTotal = subTotal + item.getLineTotal();
         // the .07 is the taxrate of 7% for
@@ -171,6 +176,11 @@ public class OrderScreenController implements Initializable {
 
         itemNumberTextField.clear();
     }
+    @FXML public void treeItemClicked(){
+        TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
+        System.out.println(item.getValue());
+    }
+
 
     //TODO
     // -- do tender button
