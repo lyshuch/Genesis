@@ -115,6 +115,9 @@ public class OrderScreenController implements Initializable {
             System.out.println("Error occurred while getting ItemInformation from DB.\n" + e);
             throw e;
         }
+        catch (NumberFormatException e){
+            infoTextArea.appendText("Please enter a valid item number\n");
+        }
     }
     public void onRemoveItemClick(){
         ObservableList<Items> itemsSelected = orderTable.getSelectionModel().getSelectedItems();

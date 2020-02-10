@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.*;
 
 public class GenesisDAO {
-    static Items searchItem(int itemNumber, int qty, String load) throws SQLException, ClassNotFoundException{
+    public static Items searchItem(int itemNumber, int qty, String load) throws SQLException, ClassNotFoundException{
 
         //execute SELECT statement
         try{
@@ -23,8 +23,6 @@ public class GenesisDAO {
             throw e;
         }
     }
-
-
     private static Items getItemsFromResultSet(@NotNull ResultSet rs, int qty, String load) throws SQLException{ // this method is to get the values from the database and pass them to a item object
         Items item = null;
         if(rs.next()){
@@ -41,7 +39,6 @@ public class GenesisDAO {
         }
         return item;
     }
-
     public static ObservableList<Items> searchItems() throws SQLException, ClassNotFoundException{
         //declare a select statement
         String selectStmt = "SELECT * FROM items";
@@ -61,6 +58,7 @@ public class GenesisDAO {
         }
     }
     //SELECT * from items operation
+    @NotNull
     private static ObservableList<Items> getItemList(ResultSet rs) throws SQLException {
         //Declare a observable list wich comprises of item objects
         ObservableList<Items> itemList = FXCollections.observableArrayList();
@@ -78,4 +76,26 @@ public class GenesisDAO {
         }
         return itemList;
     }
+    public static Employee employeeLogin(String empId, String pass) throws SQLException, ClassNotFoundException{
+        String selectStmt = "SELECT  FROM employees WHERE EmployeeID='" + empId + "' AND Password='" + pass + "';";
+        try{
+            ResultSet rsEmployee = DBUtil.dbExecuteQuery(selectStmt);
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static Employee getEmployeeFromResultSet(@NotNull ResultSet rs) throws SQLException{ // this method is to get the values from the database and pass them to a item object
+        Employee employee = null;
+        if(rs.next()){
+            employee = new Employee();
+            employee.setEmployeeNumber(rs.getInt("EmployeeID"));
+            employee.setDepartmentID(rs.getInt("Department"));
+        }
+        return employee;
+    }
+
+
+
 }

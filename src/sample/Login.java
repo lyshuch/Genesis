@@ -7,6 +7,9 @@ import javafx.scene.control.TextField;
 
 import javax.swing.*;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
@@ -21,6 +24,7 @@ public class Login implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        loginButton.setDefaultButton(true);
 
 
 
@@ -31,7 +35,8 @@ public class Login implements Initializable {
         password.setText("");
     }
 
-    @FXML public void onLoginButtonClicked(){
+    @FXML public void onLoginButtonClicked() throws SQLException {
+        Connection conn = null;
 
     }
 

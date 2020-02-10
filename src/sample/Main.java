@@ -13,7 +13,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         window = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("SellingScreen.fxml"));
         window.setTitle("Genesis");
         sellingScreen = new Scene(root, 1920, 1080);
         //sellingScreen.getStylesheets().add("sample/Viper.css");

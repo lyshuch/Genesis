@@ -9,7 +9,7 @@ public class DBUtil {
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     //connection
-    private static Connection conn = null
+    private static Connection conn = null;
 
     public static void dbConnect() throws SQLException, ClassNotFoundException{
         try {
@@ -23,7 +23,7 @@ public class DBUtil {
 
         // establish the mysql connection using connection string
         try{
-            conn = DriverManager.getConnection(//removed data for security purposes);
+            conn = DriverManager.getConnection("jdbc:mysql://51.83.66.220:3306/malauxco_Genesis", "malauxco_admin", "austin2531");
         }catch(SQLException e){
             System.out.println("Connection Failed! Check output console" + e);
             e.printStackTrace();
@@ -80,7 +80,7 @@ public class DBUtil {
         }
         return crs;
     }
-    public static ResultSet dbExecutePreparedStmt(int itemNumber) throws SQLException, ClassNotFoundException{
+    static ResultSet dbExecutePreparedStmt(int itemNumber) throws SQLException, ClassNotFoundException{
         dbConnect();
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM items WHERE ItemNumber=(?)");
 
@@ -110,25 +110,55 @@ public class DBUtil {
         return crs;
     }//this is to search for an item using a prepaired statement to prevent agesnt sql injection
 
-    public static void dbExecuteUpdate(String sqlStmt) throws SQLException, ClassNotFoundException{
+
+    public static void dbExecuteUpdate(String sqlStmt) throws SQLException, ClassNotFoundException {
         //Declare statment as null
         Statement stmt = null;
         try {
             //connect to DB
             dbConnect();
             //create statement
-            stmt =conn.createStatement();
+            stmt = conn.createStatement();
             //runn execute update operation with given sql statement
             stmt.executeUpdate(sqlStmt);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Problem occurred at executeUpdate operation: " + e);
             throw e;
-        }finally {
-            if(stmt != null){
+        } finally {
+            if (stmt != null) {
                 //close statement
                 stmt.close();
             }
             dbDisconnect();
         }
+    }
+    public static ResultSet preparedStatementSelect(String table, String columnToSelect, String thing) throws SQLException, ClassNotFoundException {
+        dbConnect();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM "+ table + " WHERE columnToSelect =(?)");
+
+        ResultSet resultSet = null;
+        CachedRowSet crs;
+        try {
+            dbConnect();
+            System.out.println("Select Statement: SELECT * FROM " + table + " WHERE " + columnToSelect + "= "  );
+            stmt.setString(1, String.valueOf(thing));
+            resultSet = stmt.executeQuery();
+            crs = RowSetProvider.newFactory().createCachedRowSet();
+            crs.populate(resultSet);
+        }catch (SQLException e){
+            System.out.println("Problem occurred at executeQuery operation : " + e );
+            throw e;
+        }finally {
+            if (resultSet != null){
+                //close resultSet
+                resultSet.close();
+            }
+            if (stmt != null){
+                //close statement
+                stmt.close();
+            }
+            dbDisconnect();
+        }
+        return crs;
     }
 }

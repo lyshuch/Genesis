@@ -15,5 +15,11 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="@server.redshift.amazonaws.com" uuid="24f3a8eb-f9a1-46fd-83d3-ef23b1616c06">
+      <driver-ref>redshift</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.amazon.redshift.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:redshift://server.redshift.amazonaws.com:5439</jdbc-url>
+    </data-source>
   </component>
 </project>
