@@ -15,11 +15,11 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="@server.redshift.amazonaws.com" uuid="24f3a8eb-f9a1-46fd-83d3-ef23b1616c06">
-      <driver-ref>redshift</driver-ref>
+    <data-source source="LOCAL" name="Malauxco Database" uuid="a8cde09f-c1ee-4c18-aee3-84994e0cdd84">
+      <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.amazon.redshift.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:redshift://server.redshift.amazonaws.com:5439</jdbc-url>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://51.83.66.220:3306</jdbc-url>
     </data-source>
   </component>
 </project>
