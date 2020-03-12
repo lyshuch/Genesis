@@ -1,0 +1,15 @@
+.root{
+
+    -fx-font-size: 11pt;
+}
+.table-view{
+
+
+}
+.button{
+    -fx-font-size: 14pt;
+}
+.form-group{
+    position: reletive;
+    margin-bottom: 1.5rem;
+}
