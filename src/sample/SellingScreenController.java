@@ -12,48 +12,73 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
-public class OrderScreenController implements Initializable {
+public class SellingScreenController implements Initializable {
 
     //Initializing components from scenebuilder
 
     //buttons
-    @FXML private Button enterItemButton;
-    @FXML private Button tenderButton;
-    @FXML private Button removeItemButton;
+    @FXML
+    private Button enterItemButton;
+    @FXML
+    private Button tenderButton;
+    @FXML
+    private Button removeItemButton;
 
     //treeview
-    @FXML public TreeView <String> treeView;
+    @FXML
+    public TreeView<String> treeView;
 
     //Choicebox
-    @FXML private ChoiceBox<String> loadChoiceBox;
+    @FXML
+    private ChoiceBox<String> loadChoiceBox;
 
     //textfield
-    @FXML private TextField qtyTextField;
-    @FXML private TextField priceTextField;
-    @FXML private TextField modelNumberTextField;
-    @FXML private TextField itemNumberTextField;
+    @FXML
+    private TextField qtyTextField;
+    @FXML
+    private TextField priceTextField;
+    @FXML
+    private TextField modelNumberTextField;
+    @FXML
+    private TextField itemNumberTextField;
 
     //labels
-    @FXML private Label qtyLabel;
-    @FXML private Label priceLabel;
-    @FXML private Label modelNumberLabel;
-    @FXML private Label loadLabel;
-    @FXML private Label itemNumberLabel;
-    @FXML private Label subtotalLabel;
-    @FXML private Label taxLabel;
-    @FXML private Label totalLabel;
+    @FXML
+    private Label qtyLabel;
+    @FXML
+    private Label priceLabel;
+    @FXML
+    private Label modelNumberLabel;
+    @FXML
+    private Label loadLabel;
+    @FXML
+    private Label itemNumberLabel;
+    @FXML
+    private Label subtotalLabel;
+    @FXML
+    private Label taxLabel;
+    @FXML
+    private Label totalLabel;
 
     //table view
-    @FXML private TableView<Items> orderTable;
-    @FXML private TableColumn<Items, Integer> itemNumberColumn;
-    @FXML private TableColumn<Items, Integer> qtyColumn;
-    @FXML private TableColumn<Items, String> pricePerItemColumn;
-    @FXML private TableColumn<Items, String> loadColumn;
-    @FXML private TableColumn<Items, String> modelNumberColumn;
-    @FXML private TableColumn<Items, String> lineSubtotalColumn;
+    @FXML
+    private TableView<Items> orderTable;
+    @FXML
+    private TableColumn<Items, Integer> itemNumberColumn;
+    @FXML
+    private TableColumn<Items, Integer> qtyColumn;
+    @FXML
+    private TableColumn<Items, String> pricePerItemColumn;
+    @FXML
+    private TableColumn<Items, String> loadColumn;
+    @FXML
+    private TableColumn<Items, String> modelNumberColumn;
+    @FXML
+    private TableColumn<Items, String> lineSubtotalColumn;
 
     //textbox
-    @FXML private TextArea infoTextArea;
+    @FXML
+    private TextArea infoTextArea;
 
     //variables
     private double subTotal;
@@ -95,31 +120,32 @@ public class OrderScreenController implements Initializable {
         modelNumberColumn.setCellValueFactory(cellData -> cellData.getValue().modelNumberProperty());
         lineSubtotalColumn.setCellValueFactory(cellData -> Bindings.format("%.2f", cellData.getValue().lineTotalProperty()));
     }
-    public void onEnterItemClick() throws ClassNotFoundException, SQLException{
-        if (qtyTextField.getText().equals("")){
+
+    public void onEnterItemClick() throws ClassNotFoundException, SQLException {
+        if (qtyTextField.getText().equals("")) {
             qtyTextField.setText("1");
         }
-        try{
+        try {
             //get item information
             Items item = GenesisDAO.searchItem(Integer.parseInt(itemNumberTextField.getText()), Integer.parseInt(qtyTextField.getText()), loadChoiceBox.getValue());
 
             //checking to see if item is null (did not find item in database)
-            if (item == null){
-                infoTextArea.appendText("Item number " + itemNumberTextField.getText() +" was not found\n");
+            if (item == null) {
+                infoTextArea.appendText("Item number " + itemNumberTextField.getText() + " was not found\n");
             }
 
             //populate item on tableview and display
             populateAndShowItem(item);
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error occurred while getting ItemInformation from DB.\n" + e);
             throw e;
-        }
-        catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             infoTextArea.appendText("Please enter a valid item number\n");
         }
     }
-    public void onRemoveItemClick(){
+
+    public void onRemoveItemClick() {
         ObservableList<Items> itemsSelected = orderTable.getSelectionModel().getSelectedItems();
         ObservableList<Items> allItems;
         allItems = orderTable.getItems();
@@ -136,7 +162,9 @@ public class OrderScreenController implements Initializable {
         }
         itemsSelected.forEach(allItems::remove);
     }
-    @FXML public void tenderButtonClick() {
+
+    @FXML
+    public void tenderButtonClick() {
         ObservableList<Items> tableItems = orderTable.getItems();
         if (tableItems.isEmpty() == false) {
             System.out.println("Table Items is not empty");
@@ -145,24 +173,26 @@ public class OrderScreenController implements Initializable {
                 Items items = tableItems.get(i);
                 System.out.println(items.toString());
             }
-        }
-        else{
+        } else {
             System.out.println("Table Items is empty");
         }
     }
-    @FXML private void populateAndShowItem(Items item) {
-        if(item != null){
+
+    @FXML
+    private void populateAndShowItem(Items item) {
+        if (item != null) {
             populateItem(item);
         }
-}
-    @FXML private void populateItem(Items item) {
+    }
+
+    @FXML
+    private void populateItem(Items item) {
         subTotal = subTotal + item.getLineTotal();
         // the .07 is the taxrate of 7% for
         tax = subTotal * .07; // the .07 is the taxrate of 7% for
         // the 1.07 is for finding what the sub total and the tax added together would be
         total = subTotal * 1.07;
         // comment to test githup upload
-
 
 
         //declare an observable list for table view
@@ -179,7 +209,9 @@ public class OrderScreenController implements Initializable {
 
         itemNumberTextField.clear();
     }
-    @FXML public void treeItemClicked(){
+
+    @FXML
+    public void treeItemClicked() {
         TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
         System.out.println(item.getValue());
     }

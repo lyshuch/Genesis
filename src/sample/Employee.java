@@ -12,6 +12,33 @@ public class Employee {
     private SimpleDoubleProperty sales;
     private SimpleStringProperty password;
     private SimpleIntegerProperty override_number;
+    private SimpleStringProperty genesisUsername;
+
+    public String getGenesisUsername() {
+        return genesisUsername.get();
+    }
+
+    public SimpleStringProperty genesisUsernameProperty() {
+        return genesisUsername;
+    }
+
+    public void setGenesisUsername(String genesisUsername) {
+        this.genesisUsername.set(genesisUsername);
+    }
+
+    public String getGenesisPassword() {
+        return genesisPassword.get();
+    }
+
+    public SimpleStringProperty genesisPasswordProperty() {
+        return genesisPassword;
+    }
+
+    public void setGenesisPassword(String genesisPassword) {
+        this.genesisPassword.set(genesisPassword);
+    }
+
+    private SimpleStringProperty genesisPassword;
 
     public int getEmployeeNumber() {
         return employeeNumber.get();
@@ -97,7 +124,7 @@ public class Employee {
         this.override_number.set(override_number);
     }
 
-    public Employee(){
+    public Employee() {
         this.employeeNumber = new SimpleIntegerProperty();
         this.departmentID = new SimpleIntegerProperty();
         this.f_name = new SimpleStringProperty();
@@ -105,5 +132,7 @@ public class Employee {
         this.sales = new SimpleDoubleProperty();
         this.password = new SimpleStringProperty();
         this.override_number = new SimpleIntegerProperty();
+        this.genesisPassword = new SimpleStringProperty();
+        this.genesisUsername = new SimpleStringProperty();
     }
 }

@@ -1,31 +1,29 @@
 package sample;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class GenesisDAO {
-    public static Items searchItem(int itemNumber, int qty, String load) throws SQLException, ClassNotFoundException{
+    //functions dealing with items
+    public static Items searchItem(int itemNumber, int qty, String load) throws SQLException, ClassNotFoundException {
 
         //execute SELECT statement
-        try{
+        try {
             //get resultset from dbexecutequery method
-            ResultSet rsitem = DBUtil.dbExecutePreparedStmt(itemNumber);
-
-            //send resultset to the getitemList method and get item object
-
+            ResultSet rsitem = DBUtil.dbSearchForItem(itemNumber);
             //return item object
             return getItemsFromResultSet(rsitem, qty, load);
-        }catch (SQLException e){
-            System.out.println("While searching an item with item number: " + itemNumber + " an error occurred: "+e);
+        } catch (SQLException e) {
+            System.out.println("While searching an item with item number: " + itemNumber + " an error occurred: " + e);
             throw e;
         }
     }
-    private static Items getItemsFromResultSet(@NotNull ResultSet rs, int qty, String load) throws SQLException{ // this method is to get the values from the database and pass them to a item object
+
+    private static Items getItemsFromResultSet(@NotNull ResultSet rs, int qty, String load) throws SQLException { // this method is to get the values from the database and pass them to a item object
         Items item = null;
-        if(rs.next()){
+        if (rs.next()) {
             item = new Items();
             item.setItemNumber(rs.getInt("itemNumber"));
             item.setInventory(rs.getInt("Inventory"));
@@ -39,7 +37,45 @@ public class GenesisDAO {
         }
         return item;
     }
-    public static ObservableList<Items> searchItems() throws SQLException, ClassNotFoundException{
+
+    //functions dealing with employees
+    public static Employee searchEmployee(String user, String pass) throws SQLException, ClassNotFoundException {
+        try {
+            ResultSet rsemp = DBUtil.dbSearhForEmployee(user, pass);
+            return getEmployeeFromResultSet(rsemp);
+        } catch (SQLException e) {
+            System.out.println("Something happened while searching for the employee!");
+            throw e;
+        }
+
+    }
+
+    private static Employee getEmployeeFromResultSet(@NotNull ResultSet rs) throws SQLException { // this method is to get the values from the database and pass them to a item object
+        Employee employee = null;
+
+        if (rs.next()) {
+            System.out.println("Got into getEmployeeFromResultSet funchtion!");
+            employee = new Employee();
+            employee.setEmployeeNumber(rs.getInt("EmployeeID"));
+            employee.setDepartmentID(rs.getInt("Department"));
+            employee.setF_name(rs.getString("FirstName"));
+            employee.setL_name(rs.getString("LastName"));
+            employee.setSales(rs.getDouble("Sales"));
+            employee.setPassword(rs.getString("Password"));
+            employee.setGenesisUsername(rs.getString("GenesisUsername"));
+            employee.setGenesisPassword(rs.getString("GenesisPassword"));
+            employee.setOverride_number(rs.getInt("Overide_number"));
+        }
+        else {
+            System.out.println("rs.next appears to be null");
+        }
+        return employee;
+    }
+
+
+    // things that are not used but might need later
+    //----------------------------------------------------------------------------------------// separating for clarity
+    /*public static ObservableList<Items> searchItems() throws SQLException, ClassNotFoundException{
         //declare a select statement
         String selectStmt = "SELECT * FROM items";
 
@@ -57,9 +93,7 @@ public class GenesisDAO {
             throw e;
         }
     }
-    //SELECT * from items operation
-    @NotNull
-    private static ObservableList<Items> getItemList(ResultSet rs) throws SQLException {
+    private static ObservableList<Items> getItemList(@NotNull ResultSet rs) throws SQLException {
         //Declare a observable list wich comprises of item objects
         ObservableList<Items> itemList = FXCollections.observableArrayList();
 
@@ -76,26 +110,5 @@ public class GenesisDAO {
         }
         return itemList;
     }
-    public static Employee employeeLogin(String empId, String pass) throws SQLException, ClassNotFoundException{
-        String selectStmt = "SELECT  FROM employees WHERE EmployeeID='" + empId + "' AND Password='" + pass + "';";
-        try{
-            ResultSet rsEmployee = DBUtil.dbExecuteQuery(selectStmt);
-            return null;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    private static Employee getEmployeeFromResultSet(@NotNull ResultSet rs) throws SQLException{ // this method is to get the values from the database and pass them to a item object
-        Employee employee = null;
-        if(rs.next()){
-            employee = new Employee();
-            employee.setEmployeeNumber(rs.getInt("EmployeeID"));
-            employee.setDepartmentID(rs.getInt("Department"));
-        }
-        return employee;
-    }
-
-
-
+     */
 }

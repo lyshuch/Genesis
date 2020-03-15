@@ -11,10 +11,10 @@ public class DBUtil {
     //connection
     private static Connection conn = null;
 
-    public static void dbConnect() throws SQLException, ClassNotFoundException{
+    public static void dbConnect() throws SQLException, ClassNotFoundException {
         try {
             Class.forName(JDBC_DRIVER);
-        }catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             System.out.println("Where is your MYSQL driver");
             e.printStackTrace();
             throw e;
@@ -22,27 +22,27 @@ public class DBUtil {
         System.out.println("MySQL JDBC Driver Registered");
 
         // establish the mysql connection using connection string
-        try{
+        try {
             conn = DriverManager.getConnection("jdbc:mysql://51.83.66.220:3306/malauxco_Genesis", "malauxco_admin", "austin2531");
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console" + e);
             e.printStackTrace();
             throw e;
         }
     }
 
-    public static void dbDisconnect() throws SQLException{
-        try{
-            if(conn != null && !conn.isClosed()){
+    public static void dbDisconnect() throws SQLException {
+        try {
+            if (conn != null && !conn.isClosed()) {
                 conn.close();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw e;
         }
     }
 
     //DB Execute Query Operation
-    public static ResultSet dbExecuteQuery(String queryStmt) throws SQLException, ClassNotFoundException{
+    public static ResultSet dbExecuteQuery(String queryStmt) throws SQLException, ClassNotFoundException {
         //Declare Statment, resultSet and CachedRusultSet as null
         Statement stmt = null;
         ResultSet resultSet = null;
@@ -64,15 +64,15 @@ public class DBUtil {
             //we are useing CachedRowSet
             crs = RowSetProvider.newFactory().createCachedRowSet();
             crs.populate(resultSet);
-        }catch(SQLException e){
-            System.out.println("Problem occurred at executeQuery operation : " + e );
+        } catch (SQLException e) {
+            System.out.println("Problem occurred at executeQuery operation : " + e);
             throw e;
-        }finally {
-            if (resultSet != null){
+        } finally {
+            if (resultSet != null) {
                 //close resultSet
                 resultSet.close();
             }
-            if (stmt != null){
+            if (stmt != null) {
                 //close statement
                 stmt.close();
             }
@@ -80,7 +80,42 @@ public class DBUtil {
         }
         return crs;
     }
-    static ResultSet dbExecutePreparedStmt(int itemNumber) throws SQLException, ClassNotFoundException{
+
+    static ResultSet dbSearhForEmployee(String user, String pass) throws SQLException, ClassNotFoundException {
+        dbConnect();
+        String username = user;
+        String password = pass;
+        String insertString = "SELECT * FROM employees WHERE GenesisPassword=? AND GenesisUsername= ?";
+        PreparedStatement stmt = conn.prepareStatement(insertString);
+
+        ResultSet resultSet = null;
+        CachedRowSet crs;
+        try {
+            //dbConnect(); // do i need this because i am already connected above?
+            System.out.println();
+            stmt.setString(1, password);
+            stmt.setString(2, username);
+            resultSet = stmt.executeQuery();
+            crs = RowSetProvider.newFactory().createCachedRowSet();
+            crs.populate(resultSet);
+        } catch (SQLException e) {
+            System.out.println("Problem occurred at execureQuery operation: " + e);
+            throw e;
+        } finally {
+            if (resultSet != null) {
+                //close resultSet
+                resultSet.close();
+            }
+            if (stmt != null) {
+                //close statment
+                stmt.close();
+            }
+            dbDisconnect();
+        }
+        return crs;
+    }
+
+    static ResultSet dbSearchForItem(int itemNumber) throws SQLException, ClassNotFoundException {
         dbConnect();
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM items WHERE ItemNumber=(?)");
 
@@ -93,15 +128,15 @@ public class DBUtil {
             resultSet = stmt.executeQuery();
             crs = RowSetProvider.newFactory().createCachedRowSet();
             crs.populate(resultSet);
-        }catch (SQLException e){
-            System.out.println("Problem occurred at executeQuery operation : " + e );
+        } catch (SQLException e) {
+            System.out.println("Problem occurred at executeQuery operation : " + e);
             throw e;
-        }finally {
-            if (resultSet != null){
+        } finally {
+            if (resultSet != null) {
                 //close resultSet
                 resultSet.close();
             }
-            if (stmt != null){
+            if (stmt != null) {
                 //close statement
                 stmt.close();
             }
@@ -132,28 +167,29 @@ public class DBUtil {
             dbDisconnect();
         }
     }
+
     public static ResultSet preparedStatementSelect(String table, String columnToSelect, String thing) throws SQLException, ClassNotFoundException {
         dbConnect();
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM "+ table + " WHERE columnToSelect =(?)");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM " + table + " WHERE columnToSelect = ?");
 
         ResultSet resultSet = null;
         CachedRowSet crs;
         try {
             dbConnect();
-            System.out.println("Select Statement: SELECT * FROM " + table + " WHERE " + columnToSelect + "= "  );
+            System.out.println("Select Statement: SELECT * FROM " + table + " WHERE " + columnToSelect + "= ");
             stmt.setString(1, String.valueOf(thing));
             resultSet = stmt.executeQuery();
             crs = RowSetProvider.newFactory().createCachedRowSet();
             crs.populate(resultSet);
-        }catch (SQLException e){
-            System.out.println("Problem occurred at executeQuery operation : " + e );
+        } catch (SQLException e) {
+            System.out.println("Problem occurred at executeQuery operation : " + e);
             throw e;
-        }finally {
-            if (resultSet != null){
+        } finally {
+            if (resultSet != null) {
                 //close resultSet
                 resultSet.close();
             }
-            if (stmt != null){
+            if (stmt != null) {
                 //close statement
                 stmt.close();
             }
