@@ -99,7 +99,7 @@ public class DBUtil {
             crs = RowSetProvider.newFactory().createCachedRowSet();
             crs.populate(resultSet);
         } catch (SQLException e) {
-            System.out.println("Problem occurred at execureQuery operation: " + e);
+            System.out.println("Problem occurred at executeQuery operation: " + e);
             throw e;
         } finally {
             if (resultSet != null) {
