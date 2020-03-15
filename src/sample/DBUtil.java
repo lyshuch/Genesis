@@ -32,59 +32,15 @@ public class DBUtil {
     }
 
     public static void dbDisconnect() throws SQLException {
-        try {
-            if (conn != null && !conn.isClosed()) {
-                conn.close();
-            }
-        } catch (Exception e) {
-            throw e;
+        if (conn != null && !conn.isClosed()) {
+            conn.close();
         }
     }
 
-    //DB Execute Query Operation
-    public static ResultSet dbExecuteQuery(String queryStmt) throws SQLException, ClassNotFoundException {
-        //Declare Statment, resultSet and CachedRusultSet as null
-        Statement stmt = null;
-        ResultSet resultSet = null;
-        CachedRowSet crs;
 
-        try {
-            //connect to DB (Establish a connection)
-            dbConnect();
-            System.out.println("Select Statement: " + queryStmt + "\n");
-
-            //create statement
-            stmt = conn.createStatement();
-
-            //execute select (query) operation
-            resultSet = stmt.executeQuery(queryStmt);
-
-            //cachedRowSet Implementation
-            //In order to prevent "java.sql.SQLRecoverableException: Closed Connection: next" error
-            //we are useing CachedRowSet
-            crs = RowSetProvider.newFactory().createCachedRowSet();
-            crs.populate(resultSet);
-        } catch (SQLException e) {
-            System.out.println("Problem occurred at executeQuery operation : " + e);
-            throw e;
-        } finally {
-            if (resultSet != null) {
-                //close resultSet
-                resultSet.close();
-            }
-            if (stmt != null) {
-                //close statement
-                stmt.close();
-            }
-            dbDisconnect();
-        }
-        return crs;
-    }
 
     static ResultSet dbSearhForEmployee(String user, String pass) throws SQLException, ClassNotFoundException {
         dbConnect();
-        String username = user;
-        String password = pass;
         String insertString = "SELECT * FROM employees WHERE GenesisPassword=? AND GenesisUsername= ?";
         PreparedStatement stmt = conn.prepareStatement(insertString);
 
@@ -93,8 +49,8 @@ public class DBUtil {
         try {
             //dbConnect(); // do i need this because i am already connected above?
             System.out.println();
-            stmt.setString(1, password);
-            stmt.setString(2, username);
+            stmt.setString(1, pass);
+            stmt.setString(2, user);
             resultSet = stmt.executeQuery();
             crs = RowSetProvider.newFactory().createCachedRowSet();
             crs.populate(resultSet);
@@ -143,9 +99,9 @@ public class DBUtil {
             dbDisconnect();
         }
         return crs;
-    }//this is to search for an item using a prepaired statement to prevent agesnt sql injection
+    }//this is to search for an item using a prepared statement to prevent against sql injection
 
-
+    /* none of these have been used but i might need them latter so keeping them here for now
     public static void dbExecuteUpdate(String sqlStmt) throws SQLException, ClassNotFoundException {
         //Declare statment as null
         Statement stmt = null;
@@ -197,4 +153,45 @@ public class DBUtil {
         }
         return crs;
     }
+    //DB Execute Query Operation
+    public static ResultSet dbExecuteQuery(String queryStmt) throws SQLException, ClassNotFoundException {
+        //Declare Statement, resultSet and CachedRusultSet as null
+        Statement stmt = null;
+        ResultSet resultSet = null;
+        CachedRowSet crs;
+
+        try {
+            //connect to DB (Establish a connection)
+            dbConnect();
+            System.out.println("Select Statement: " + queryStmt + "\n");
+
+            //create statement
+            stmt = conn.createStatement();
+
+            //execute select (query) operation
+            resultSet = stmt.executeQuery(queryStmt);
+
+            //cachedRowSet Implementation
+            //In order to prevent "java.sql.SQLRecoverableException: Closed Connection: next" error
+            //we are useing CachedRowSet
+            crs = RowSetProvider.newFactory().createCachedRowSet();
+            crs.populate(resultSet);
+        } catch (SQLException e) {
+            System.out.println("Problem occurred at executeQuery operation : " + e);
+            throw e;
+        } finally {
+            if (resultSet != null) {
+                //close resultSet
+                resultSet.close();
+            }
+            if (stmt != null) {
+                //close statement
+                stmt.close();
+            }
+            dbDisconnect();
+        }
+        return crs;
+    }
+
+     */
 }
