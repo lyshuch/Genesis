@@ -78,7 +78,7 @@ public class DBUtil {
         ResultSet resultSet = null;
         CachedRowSet crs;
         try {
-            dbConnect();
+            //dbConnect(); //dont think i need this as it connected earlier
             System.out.println("Select Statement: SELECT * FROM items WHERE ItemNumber= " + itemNumber);
             stmt.setString(1, String.valueOf(itemNumber));
             resultSet = stmt.executeQuery();
